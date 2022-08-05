@@ -2,4 +2,6 @@ pandas
 plotly
 ipykernel
 black
+nbformat
 pyarrow
+statsmodels

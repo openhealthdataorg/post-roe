@@ -30,6 +30,6 @@ MANIFEST
 .ipynb_checkpoints
 
 ## Other 
-
+data/
 .vscode
 .venv

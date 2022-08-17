@@ -2,6 +2,23 @@ import pandas as pd
 
 BUCKET_BASE = "https://storage.googleapis.com/www.postroemap.org/data"
 
+import pandas as pd
+
+
+
+class TinyQuery:
+    
+    DATA_BASE = "/Users/parker/Development/post-roe/data/"
+
+    @staticmethod
+    def adi_with_status_query() -> pd.DataFrame:
+        states = pd.read_csv(f"{TinyQuery.DATA_BASE}/tf/_220805_wp_roe_data.csv")
+        states = states[['state','state_status','_status_wp']]
+        adi = pd.read_feather("/Users/parker/Development/post-roe/data/tf/adi_zip5.feather")
+        adi = adi.merge(states, how='left').dropna(subset='state_status')
+        adi['_adi_decile'] = (adi['adi_median'] / 10).astype(int)
+        adi['_adi_decile'] = adi['_adi_decile'].apply(lambda x: 9 if x==10 else x)
+        return adi
 
 class BucketQuery:
     @staticmethod
@@ -50,28 +67,31 @@ class BucketQuery:
         _status_wp: str 4 status_buckets
         _status: two buckets: protected, not_protected
         """
-        states = pd.read_csv(f"{BUCKET_BASE}/wp_roe_data.csv")  # washington post
-        states = states[["States", "DATAWRAPPER"]]
-        states = states.rename(columns={"DATAWRAPPER": "_status_wp", "States": "state"})
-        state_populations = (
-            BucketQuery.census_zip5_query()
-            .groupby(["state"])
-            .agg(census_total=("population", "sum"))
-            .reset_index()
-        )
-        states = states.merge(state_populations)
+        
+        
+        # states = pd.read_csv(f"{BUCKET_BASE}/wp_roe_data.csv")  # washington post
+        # states = states[["States", "DATAWRAPPER"]]
+        # states = states.rename(columns={"DATAWRAPPER": "_status_wp", "States": "state"})
+        # state_populations = (
+        #     BucketQuery.census_zip5_query()
+        #     .groupby(["state"])
+        #     .agg(census_total=("population", "sum"))
+        #     .reset_index()
+        # )
+        # states = states.merge(state_populations)
 
-        def _classify(status_wp: str) -> str:
-            if status_wp == "Legal and likely to be protected":
-                return "protected"
-            else:
-                return "not_protected"
+        # def _classify(status_wp: str) -> str:
+        #     if status_wp == "Legal and likely to be protected":
+        #         return "protected"
+        #     else:
+        #         return "not_protected"
 
-        states["_status"] = states["_status_wp"].apply(_classify)
-        states = states[states["_status"].isin(status)]
-        if len(state_codes) > 0:
-            states = states[states["state"].isin(state_codes)]
-        states = states.sort_values("_status", ascending=False).reset_index(drop=True)
+        # states["_status"] = states["_status_wp"].apply(_classify)
+        # states = states[states["_status"].isin(status)]
+        # if len(state_codes) > 0:
+        #     states = states[states["state"].isin(state_codes)]
+        # states = states.sort_values("_status", ascending=False).reset_index(drop=True)
+        states = pd.read_csv("/Users/parker/Development/post-roe/data/tf/_220805_wp_roe_data.csv")
         return states
 
     @staticmethod

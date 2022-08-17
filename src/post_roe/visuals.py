@@ -9,11 +9,11 @@ def draw_status_treemap() -> None:
     """
     states = bq.states_query()
     protected_pct = (
-        states[states["_status"] == "protected"]["population"].sum()
+        states[states["status"] == "protected"]["population"].sum()
         / states["population"].sum()
     )
     unprotected_pct = (
-        states[states["_status"] == "not_protected"]["population"].sum()
+        states[states["status"] == "not_protected"]["population"].sum()
         / states["population"].sum()
     )
     px.treemap(
@@ -22,5 +22,5 @@ def draw_status_treemap() -> None:
         color="_status_wp",
         values="population",
         height=600,
-        title=f"Abortion Protections Status by State | Scaled by Total Population | Not::Protected {'{:.2f}'.format(unprotected_pct)}%::{'{:.2f}'.format(protected_pct)}% <br><sup>Source: Washington Post",
+        title=f"Abortion Protections Status by State | Scaled by Total Population | Not::Protected {'{:.2f}'.format(unprotected_pct)}%::{'{:.2f}'.format(protected_pct)}% <br><sup>Source: Washington Post + KS Update",
     ).show(renderer="notebook")

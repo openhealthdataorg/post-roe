@@ -33,6 +33,7 @@ class BucketQuery:
                 "_census_total": "population",
             }
         )
+        df = df[~df['state'].isin(["HI","AK"])].reset_index(drop=True)
         return df
 
     @staticmethod
@@ -44,9 +45,9 @@ class BucketQuery:
         if len(states) > 0:
             df = df[df["state"].isin(states)]
 
-        df["_zip3"] = df["_zip5"].apply(lambda x: f"{x[0:3]}**")
+        df["zip3"] = df["zip5"].apply(lambda x: f"{x[0:3]}**")
         census_zip3 = (
-            df.groupby(["state", "_zip3"])
+            df.groupby(["state", "zip3"])
             .agg(
                 lat=("lat", "mean"),
                 lon=("lon", "mean"),

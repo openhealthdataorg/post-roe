@@ -1,7 +1,9 @@
 pandas
 plotly
+statsmodels
+geopy
+requests
 ipykernel
 black
 nbformat
 pyarrow
-statsmodels

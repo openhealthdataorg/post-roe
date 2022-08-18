@@ -5,4 +5,4 @@ To Share...
 
 Make it "Colab-able"
 
-pip install adi_map
+pip install post_roe

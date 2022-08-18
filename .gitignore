@@ -33,3 +33,5 @@ MANIFEST
 data/
 .vscode
 .venv
+notebooks/2022-08-17/1m_o_d_geodesic.feather
+notebooks/2022-08-05/cache.feather

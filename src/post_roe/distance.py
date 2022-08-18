@@ -1,8 +1,6 @@
-import pandas as pd
-from post_roe.query import BucketQuery as bq
 from geopy.distance import geodesic
 import requests
-
+from post_roe.query import BucketQuery as bq
 
 GOOGLE_DISTANCE_API_KEY = "AIzaSyARPGbw0525MOHKf5l4hE41Z93lsp2L-8k"
 
@@ -45,23 +43,3 @@ class Distance:
 
         data = _call_google(o, d)
         return _get_minutes(data)
-
-
-origins = bq.census_zip3_query()
-origins["lat_lon"] = origins.apply(lambda x: (x["lat"], x["lon"]), axis=1)
-
-destination = bq.census_zip5_query().sample(1000).reset_index(drop=True)
-destination["lat_lon"] = destination.apply(lambda x: (x["lat"], x["lon"]), axis=1)
-
-def get_drive_time_mean(origin, k=5):
-    df = destination[["lat_lon"]].reset_index()
-    df["geodesic"] = df["lat_lon"].apply(
-        lambda d: Distance.geodesic(origin["lat_lon"], d)
-    )
-    df = df.sort_values("geodesic")[0:k]
-
-    df["drive_time"] = df["lat_lon"].apply(
-        lambda d: Distance.drive_time(origin["lat_lon"], d)
-    )
-    # display(df)
-    return df["drive_time"].mean()

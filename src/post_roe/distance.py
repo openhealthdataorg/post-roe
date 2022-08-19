@@ -22,7 +22,6 @@ class Distance:
                 minutes = seconds / 60
                 return int(minutes)
             except Exception as e:
-                # print(e, google_distance_response)
                 pass
 
         def _call_google(o: tuple, d: tuple) -> dict:
@@ -43,3 +42,54 @@ class Distance:
 
         data = _call_google(o, d)
         return _get_minutes(data)
+
+
+
+# def _get_google_drive_distance(google_distance_response: dict) -> int:
+#     """
+#         get driving miles
+#     """
+#     try:
+#         meters = google_distance_response['rows'][0]['elements'][0]['distance']['value']
+#         miles = meters / 1609
+#         return int(miles)
+#     except Exception as e:
+#         # print(e, google_distance_response)
+#         pass
+
+# def _get_google_drive_duration(google_distance_response: dict) -> int:
+#     """
+#         get driving minute
+#     """
+#     try:
+#         seconds = google_distance_response['rows'][0]['elements'][0]['duration']['value']
+#         minutes = seconds / 60
+#         return int(minutes)
+#     except Exception as e:
+#         # print(e, google_distance_response)
+#         pass
+
+# def _get_destination_state(distance_matrix_response):
+#     try:
+#         destination = distance_matrix_response['destination_addresses'][0]
+#         destination_state = destination.split(",")[2].strip().split(" ")[0]
+#         return destination_state
+#     except:
+#         pass
+
+# def _get_origin_state(distance_matrix_response):
+#     try: 
+#         origin = distance_matrix_response['origin_addresses'][0]
+#         origin_state = origin.split(",")[2].strip().split(" ")[0]
+#         return origin_state
+#     except:
+#         pass
+
+# def _get_origin_zip(distance_matrix_response):
+#     try: 
+#         origin = distance_matrix_response['origin_addresses'][0]
+#         origin_state = origin.split(",")[2].strip().split(" ")[-1]
+#         return origin_state
+#     except:
+#         pass
+

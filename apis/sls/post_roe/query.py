@@ -17,8 +17,7 @@ class BucketQuery:
             df = df[~df["state"].isin(["HI", "AK"])].reset_index(drop=True)
         if len(states) > 0:
             df = df[df["state"].isin(states)].reset_index(drop=True)
-        df = df[["state", "zip5", "lat","lon", "lat_lon", "population", "adi_median"]]
-        return df
+        return df[["state", "zip5", "lat_lon", "population", "adi_median"]]
 
     @staticmethod
     def census_zip3_query(states=[]) -> pd.DataFrame:

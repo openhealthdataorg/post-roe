@@ -5,6 +5,11 @@ BUCKET_BASE = "https://storage.googleapis.com/ohdo-post-roe-dev/data"
 
 class BucketQuery:
    
+    @staticmethod
+    def drive_time_query(case="base") -> pd.DataFrame:
+        df = pd.read_feather(f"{BUCKET_BASE}/drive_time_{case}.feather")
+        return df
+
     # @staticmethod
     # def to_feather(df: pd.DataFrame, fname: str) -> None:
     #     df.to_feather(f"gs://ohdo-post-roe-dev/data/{fname}.feather")

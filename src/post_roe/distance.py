@@ -1,8 +1,6 @@
 from geopy.distance import geodesic
 import requests
-from post_roe.query import BucketQuery as bq
-
-GOOGLE_DISTANCE_API_KEY = "AIzaSyARPGbw0525MOHKf5l4hE41Z93lsp2L-8k"
+import os
 
 class Distance:
 
@@ -32,7 +30,7 @@ class Distance:
                 "origins": _tuple_to_string(o),
                 "destinations": _tuple_to_string(d),
                 "units": "imperial",
-                "key": GOOGLE_DISTANCE_API_KEY,
+                "key": os.getenv("GOOGLE_DISTANCE_API_KEY"),
             }
             url = "https://maps.googleapis.com/maps/api/distancematrix/json"
             response = requests.get(url, params=params)

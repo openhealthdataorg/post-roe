@@ -38,3 +38,6 @@ notebooks/2022-08-05/cache.feather
 node_modules
 .serverless
 *.feather
+.env
+_tmp
+.DS_Store

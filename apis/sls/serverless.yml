@@ -31,8 +31,8 @@ functions:
     handler: get_drive_time
     events:
       - http: path
-  # build:
-  #   handler: build
-  #   events:
-  #     - http: path
+  process-async:
+    handler: process_async
+    events:
+      - http: path
     

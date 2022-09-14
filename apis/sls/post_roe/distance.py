@@ -5,8 +5,6 @@ GOOGLE_DISTANCE_API_KEY = "AIzaSyARPGbw0525MOHKf5l4hE41Z93lsp2L-8k"
 
 class Distance:
 
-    # get distances from origin-destination "o-d" pairs
-
     @staticmethod
     def geodesic(o: tuple, d: tuple) -> int:
         return int(geodesic(o, d).miles)

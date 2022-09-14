@@ -1,13 +1,13 @@
 import pandas as pd
 
 BUCKET_BASE = "https://storage.googleapis.com/ohdo-post-roe-dev/data"
-
+BUCKET_GS = "gs://ohdo-post-roe-dev/data"
 
 class BucketQuery:
    
-    # @staticmethod
-    # def to_feather(df: pd.DataFrame, fname: str) -> None:
-    #     df.to_feather(f"gs://ohdo-post-roe-dev/data/{fname}.feather")
+    @staticmethod
+    def to_feather(df: pd.DataFrame, fname: str) -> None:
+        df.to_feather(f"{BUCKET_GS}/{fname}.feather")
 
     @staticmethod
     def census_zip5_query(case="base", states=[]) -> pd.DataFrame:
@@ -46,14 +46,13 @@ class BucketQuery:
     @staticmethod
     def states_query(case="base", status=["protected", "at_risk"]) -> pd.DataFrame:
         """
-        state: str # 2 digit
-        population: int
-        status: enum(protected, at_risk)
+            state: str, population: int, status: enum(protected, at_risk)
         """
         states = pd.read_feather(f"{BUCKET_BASE}/state_status_base.feather")
         if case == "base":
             states["case"] = "base"
         elif case == "alt":
+            ## swap GA status
             i = states.index[states["state"] == "GA"][0]
             states.at[i, "state_status"] = "protected"
             states["case"] = "alt"

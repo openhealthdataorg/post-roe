@@ -41,3 +41,5 @@ node_modules
 .env
 _tmp
 .DS_Store
+notebooks/2022-09-20/api.txt
+

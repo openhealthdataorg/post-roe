@@ -11,3 +11,4 @@ twine
 scikit-learn
 fsspec
 gcsfs
+googlemaps

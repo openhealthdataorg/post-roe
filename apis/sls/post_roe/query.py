@@ -17,7 +17,7 @@ class BucketQuery:
             df = df[~df["state"].isin(["HI", "AK"])].reset_index(drop=True)
         if len(states) > 0:
             df = df[df["state"].isin(states)].reset_index(drop=True)
-        return df[["state", "zip5", "lat_lon", "population", "adi_median"]]
+        return df 
 
     @staticmethod
     def census_zip3_query(states=[]) -> pd.DataFrame:
@@ -44,13 +44,14 @@ class BucketQuery:
         return census_zip3
 
     @staticmethod
+    # states_policy_status_query
     def states_query(case="base", status=["protected", "at_risk"]) -> pd.DataFrame:
         """
             state: str, population: int, status: enum(protected, at_risk)
         """
         states = pd.read_feather(f"{BUCKET_BASE}/state_status_base.feather")
-        if case == "base":
-            states["case"] = "base"
+        if case in ["base", "main_515"]:
+            states["case"] = case
         elif case == "alt":
             ## swap GA status
             i = states.index[states["state"] == "GA"][0]
@@ -62,6 +63,6 @@ class BucketQuery:
         return states
 
     @staticmethod
-    def clinics_query(case="base", n=1000) -> pd.DataFrame:
-        df = pd.read_feather(f"{BUCKET_BASE}/clinics_{case}_{n}.feather") 
+    def clinics_query(case="base") -> pd.DataFrame:
+        df = pd.read_feather(f"{BUCKET_BASE}/clinics_{case}.feather") 
         return df

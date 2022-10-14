@@ -21,7 +21,7 @@ class Distance:
             except Exception as e:
                 pass
 
-        def _call_google(o: tuple, d: tuple) -> dict:
+        def _call_google_drive_time(o: tuple, d: tuple) -> dict:
             def _tuple_to_string(x: tuple) -> str:
                 return f"{x[0]},{x[1]}"
 
@@ -36,6 +36,5 @@ class Distance:
             if response.status_code != 200:
                 print(response.status_code, response.text)
             return response.json()
-
-        data = _call_google(o, d)
+        data = _call_google_drive_time(o, d)
         return _get_minutes(data)

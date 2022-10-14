@@ -9,7 +9,7 @@ def get_drive_time(request):
   request_json = request.get_json()
   
   origin = request_json['origin']
-  case = request_json.get("case", "base")
+  case = request_json.get("case")
   k = request_json.get("k", 5)
 
   # 0. load all the clinics
@@ -36,13 +36,17 @@ def process_async(request):
     """  
         Takes about 5 min at k=5, clinics = 1k
     """
-    MAX_WORKERS = 20
+    MAX_WORKERS = 50
+
+    request_json = request.get_json()
+    case = request_json.get("case")
 
     def _invoke_get_drive_time(origin: dict) -> dict:
         API_BASE = "https://us-central1-ohdo-post-roe-359822.cloudfunctions.net"
         endpoint = f"{API_BASE}/post-roe-sls-dev-get-drive-time"
         params = {
-            "case": "base",
+            "case": case,
+            "k": 5,
             "origin": {
                 "lat_lon": list(origin['lat_lon']),
                 "zip3": origin['zip3'],
@@ -61,7 +65,12 @@ def process_async(request):
     with ThreadPoolExecutor(max_workers=MAX_WORKERS) as exec:
         futures = exec.map(_invoke_get_drive_time, zip3_origins)
     
-    df = pd.DataFrame(list(futures))
-    bq.to_feather(df) # this is brittle. errr
+    drive_times = list(futures)
+    df = pd.DataFrame(drive_times)
     
-    return df
+    # bq.to_feather(df, f"drive_time_{case}") # this is brittle. errr
+    resp = {
+        "case": case,
+        "drive_times": drive_times
+    }
+    return resp
